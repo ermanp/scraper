@@ -1,24 +1,23 @@
-package com.utopisoft.scraper;
+package com.utopisoft;
 
-import org.jsoup.Jsoup;
+import com.utopisoft.model.Scraper;
+import com.utopisoft.service.OpusService;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
-import org.jsoup.select.Elements;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-
-import java.util.ArrayList;
-import java.util.List;
 
 @SpringBootApplication
 public class ScraperApplication implements CommandLineRunner
 {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    @Autowired
+    OpusService opusService;
 
 
     public static void main(String[] args)
@@ -30,9 +29,10 @@ public class ScraperApplication implements CommandLineRunner
     public void run(String... args) throws Exception
     {
 
-        final String url = "https://eksisozluk.com/basliklar/istatistik/skocax/son-entryleri";
-        final Document document = Jsoup.connect(url).get();
+        System.out.println(opusService.getPageNumber(new Document("")));
         /*final String url = "https://eksisozluk.com/basliklar/istatistik/skocax/son-entryleri";
+        final Document document = Jsoup.connect(url).get();
+        final String url = "https://eksisozluk.com/basliklar/istatistik/skocax/son-entryleri";
 
         final Document document = Jsoup.connect(url).get();
 

@@ -1,12 +1,15 @@
 package com.utopisoft.scraper;
 
+import com.utopisoft.ScraperApplication;
+import com.utopisoft.model.Scraper;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -16,6 +19,8 @@ import java.io.IOException;
 @SpringBootTest(classes = ScraperApplication.class)
 public class ScraperApplicationTests
 {
+    private Logger logger = LoggerFactory.getLogger(this.getClass());
+
 
     @Test
     public void contextLoads()
@@ -53,7 +58,31 @@ public class ScraperApplicationTests
     @Test
     public void getPageNumber(){
 
-        
+        try
+        {
+            Scraper scraper = new Scraper("skocax");
+
+            Elements elementsByClass = scraper.getDocument().getElementsByClass("full-index-continue-link-container").select("a");
+
+            String href = elementsByClass.attr("href");
+
+            System.out.println(href);
+
+            Document document = Jsoup.connect("https://eksisozluk.com" + href).get();
+
+
+            Elements pager = document.getElementsByClass("pager");
+
+            String attr = pager.attr("data-pagecount");
+
+            Assert.assertEquals("38",attr);
+
+        }
+        catch (IOException e)
+        {
+            e.printStackTrace();
+        }
+
 
 
 
